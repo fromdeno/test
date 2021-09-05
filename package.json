@@ -1,0 +1,40 @@
+{
+  "name": "@fromdeno/test",
+  "version": "0.1.0",
+  "description": "Minimal test runner compatible with Deno.test()",
+  "files": ["src/"],
+  "exports": "./src/api.js",
+  "typings": "./src/api.d.ts",
+  "bin": {
+    "fdt": "./src/cli.mjs"
+  },
+  "scripts": {
+    "fmt": "deno fmt --ignore=node_modules/",
+    "lint": "deno lint --ignore=node_modules/",
+    "clean": "git clean -fXde !node_modules/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fromdeno/test.git"
+  },
+  "homepage": "https://fromdeno.org",
+  "keywords": [
+    "deno",
+    "test",
+    "testing",
+    "tdd",
+    "runner",
+    "harness"
+  ],
+  "author": "Wojciech Pawlik <woj.pawlik@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fromdeno/test/issues"
+  },
+  "engines": {
+    "node": ">=14.13.1"
+  },
+  "dependencies": {
+    "getopts": "^2.3.0"
+  }
+}

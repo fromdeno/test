@@ -14,8 +14,9 @@
  */
 
 import { pathToFileURL, URL } from "url";
+import getopts from "getopts";
 import * as colors from "./colors.js";
-import { tests } from "./api.js";
+import { createTestFilter, tests } from "./api.js";
 
 /** @param {string} reason */
 function errorReason(reason) {
@@ -26,40 +27,58 @@ function errorReason(reason) {
   });
 }
 
+const options = getopts(process.argv.slice(2), {
+  default: {
+    "fail-fast": Infinity,
+    filter: "",
+  },
+  unknown(optionName) {
+    process.stderr.write(`fdt: --${optionName}: invalid option\n`);
+    return process.exit(2);
+  },
+});
+
+const filter = createTestFilter(options.filter);
 const cwd = pathToFileURL(process.cwd() + "/");
 const failures = [];
 const stats = {
   passed: 0,
   ignored: 0,
+  filteredOut: 0,
 };
 
-for (const path of process.argv.slice(2)) {
-  tests.length = 0;
-  const url = new URL(path, cwd);
-  // @ts-expect-error TypeScript doesn't support top-level await out of the box
-  await import(url.href);
-  process.stdout.write(`running ${tests.length} tests from ${url}\n`);
-  for (const test of tests) {
-    process.stdout.write(`test ${test.name}${colors.reset} ...`);
-    const start = Date.now();
-    try {
-      if (test.ignore === true) {
-        process.stdout.write(`${colors.yellow} ignored`);
-        stats.ignored++;
-        continue;
+testing: {
+  for (const path of options._) {
+    tests.length = 0;
+    const url = new URL(path, cwd);
+    // @ts-expect-error TypeScript doesn't support top-level await out of the box
+    await import(url.href);
+    const filteredTests = tests.filter(filter);
+    stats.filteredOut += tests.length - filteredTests.length;
+    process.stdout.write(`running ${filteredTests.length} tests from ${url}\n`);
+    for (const test of filteredTests) {
+      process.stdout.write(`test ${test.name}${colors.reset} ...`);
+      const start = Date.now();
+      try {
+        if (test.ignore === true) {
+          process.stdout.write(`${colors.yellow} ignored`);
+          stats.ignored++;
+          continue;
+        }
+        // @ts-expect-error TypeScript doesn't support top-level await out of the box
+        await test.fn();
+        process.stdout.write(`${colors.green} ok`);
+        stats.passed++;
+      } catch (error) {
+        process.stdout.write(`${colors.red} FAILED`);
+        failures.push({ test, error });
+      } finally {
+        const finish = Date.now();
+        process.stdout.write(
+          `${colors.gray} (${finish - start}ms)${colors.reset}\n`,
+        );
       }
-      // @ts-expect-error TypeScript doesn't support top-level await out of the box
-      await test.fn();
-      process.stdout.write(`${colors.green} ok`);
-      stats.passed++;
-    } catch (error) {
-      process.stdout.write(`${colors.red} FAILED`);
-      failures.push({ test, error });
-    } finally {
-      const finish = Date.now();
-      process.stdout.write(
-        `${colors.gray} (${finish - start}ms)${colors.reset}\n`,
-      );
+      if (failures.length >= options["fail-fast"]) break testing;
     }
   }
 }
@@ -79,10 +98,11 @@ if (failures.length) {
 process.stdout.write(`\
 ${stats.passed} passed; \
 ${failures.length} failed; \
-${stats.ignored} ignored \
+${stats.ignored} ignored; \
+${stats.filteredOut} filtered out \
 ${colors.gray}(${performance.now().toFixed(0)}ms)${colors.reset}
 `);
 
-if (process.argv.length === 2) {
+if (options._.length === 0) {
   process.stderr.write("fdt: do you need --help?\n");
 }

@@ -75,3 +75,8 @@ export function test(t: TestDefinition): void;
   * ```
   */
 export function test(name: string, fn: () => void | Promise<void>): void;
+
+/** @internal */
+export function createTestFilter(
+  filter: string,
+): (def: TestDefinition) => boolean;
