@@ -17,6 +17,15 @@ import { pathToFileURL, URL } from "url";
 import * as colors from "./colors.js";
 import { tests } from "./api.js";
 
+/** @param {string} reason */
+function errorReason(reason) {
+  process.once("beforeExit", () => {
+    process.stderr.write(
+      `\n${colors.bold}${colors.red}error${colors.reset}: ${reason}\n`,
+    );
+  });
+}
+
 const cwd = pathToFileURL(process.cwd() + "/");
 const failures = [];
 const stats = {
@@ -61,6 +70,7 @@ if (failures.length) {
     process.stdout.write(`\n${test.name}\n${error.stack}\n`);
   }
   process.stdout.write(`\ntest result:${colors.red} FAILED${colors.reset}. `);
+  errorReason("Test failed");
   process.exitCode = 1;
 } else {
   process.stdout.write(`\ntest result:${colors.green} ok${colors.reset}. `);
@@ -72,3 +82,7 @@ ${failures.length} failed; \
 ${stats.ignored} ignored \
 ${colors.gray}(${performance.now().toFixed(0)}ms)${colors.reset}
 `);
+
+if (process.argv.length === 2) {
+  process.stderr.write("fdt: do you need --help?\n");
+}

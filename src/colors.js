@@ -5,6 +5,7 @@ const noColor = process.env.NO_COLOR != null || process.env.FORCE_COLOR === "0";
 /** @param {number} code */
 const makeColor = (code) => (noColor ? "" : `\x1b[${code}m`);
 exports.reset = makeColor(0);
+exports.bold = makeColor(1);
 exports.red = makeColor(31);
 exports.green = makeColor(32);
 exports.yellow = makeColor(33);
