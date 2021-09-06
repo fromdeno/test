@@ -76,6 +76,8 @@ export function test(t: TestDefinition): void;
   */
 export function test(name: string, fn: () => void | Promise<void>): void;
 
+export const Deno = { test };
+
 /** @internal */
 export function createTestFilter(
   filter: string,

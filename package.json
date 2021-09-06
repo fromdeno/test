@@ -1,6 +1,6 @@
 {
   "name": "@fromdeno/test",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Minimal test runner, compatible with Deno.test()",
   "files": ["src/"],
   "exports": "./src/api.js",

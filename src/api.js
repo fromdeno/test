@@ -75,4 +75,6 @@ function createTestFilter(filter) {
   };
 }
 
-module.exports = { createTestFilter, test, tests };
+const Deno = { test };
+
+module.exports = { createTestFilter, Deno, test, tests };
