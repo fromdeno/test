@@ -1,13 +1,15 @@
 {
   "name": "@fromdeno/test",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Minimal test runner, compatible with Deno.test()",
-  "files": ["src/"],
   "exports": "./src/api.js",
   "typings": "./src/api.d.ts",
   "bin": {
     "fdt": "./src/cli.mjs"
   },
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "fmt": "deno fmt --ignore=node_modules/",
     "lint": "deno lint --ignore=node_modules/",
@@ -35,6 +37,6 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "getopts": "^2.3.0"
+    "mri": "^1.1.6"
   }
 }

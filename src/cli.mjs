@@ -13,8 +13,8 @@
  * ```
  */
 
+import mri from "mri";
 import { pathToFileURL, URL } from "url";
-import getopts from "getopts";
 import * as colors from "./colors.js";
 import { help, version } from "./help.js";
 import { createTestFilter, tests } from "./api.js";
@@ -28,7 +28,7 @@ function errorReason(reason) {
   });
 }
 
-const options = getopts(process.argv.slice(2), {
+const options = mri(process.argv.slice(2), {
   alias: {
     help: "h",
     version: ["v", "V"],
@@ -38,7 +38,7 @@ const options = getopts(process.argv.slice(2), {
     filter: "",
   },
   unknown(optionName) {
-    process.stderr.write(`fdt: --${optionName}: invalid option\n`);
+    process.stderr.write(`fdt: ${optionName}: invalid option\n`);
     return process.exit(2);
   },
 });
