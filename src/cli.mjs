@@ -16,6 +16,7 @@
 import { pathToFileURL, URL } from "url";
 import getopts from "getopts";
 import * as colors from "./colors.js";
+import { help, version } from "./help.js";
 import { createTestFilter, tests } from "./api.js";
 
 /** @param {string} reason */
@@ -28,6 +29,10 @@ function errorReason(reason) {
 }
 
 const options = getopts(process.argv.slice(2), {
+  alias: {
+    help: "h",
+    version: ["v", "V"],
+  },
   default: {
     "fail-fast": Infinity,
     filter: "",
@@ -37,6 +42,17 @@ const options = getopts(process.argv.slice(2), {
     return process.exit(2);
   },
 });
+
+if (options.help) {
+  // @ts-expect-error TypeScript doesn't support top-level await out of the box
+  process.stdout.write(await help());
+  process.exit(0);
+}
+
+if (options.version) {
+  process.stdout.write(`fdt v${version()}\n`);
+  process.exit(0);
+}
 
 const filter = createTestFilter(options.filter);
 const cwd = pathToFileURL(process.cwd() + "/");
@@ -104,5 +120,5 @@ ${colors.gray}(${performance.now().toFixed(0)}ms)${colors.reset}
 `);
 
 if (options._.length === 0) {
-  process.stderr.write("fdt: do you need --help?\n");
+  process.stderr.write("fdt: no test files specified. Do you need --help?\n");
 }

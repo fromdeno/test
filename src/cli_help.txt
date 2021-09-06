@@ -1,0 +1,22 @@
+@fromdeno/test runner
+
+Evaluate the given modules, run all tests declared with 'Deno.test()' and
+report results to standard output:
+
+  fdt src/fetch_test.js src/signal_test.js
+
+USAGE:
+    fdt [OPTIONS] [files]
+
+OPTIONS:
+        --fail-fast=<N>
+            Stop after N errors. Defaults to stopping after first failure.
+
+        --filter <filter>
+            Run tests with this string or pattern in the test name
+
+    -h, --help
+            Prints help information
+
+    -v, --version
+            Prints version
