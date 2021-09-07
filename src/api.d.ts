@@ -21,6 +21,9 @@ export interface TestDefinition {
   sanitizeExit?: boolean;
 }
 
+export function readTests(): Array<Required<TestDefinition>>;
+
+/** @deprecated */
 export const tests: Array<Required<TestDefinition>>;
 
 /** Register a test which will be run when `deno test` is used on the command
@@ -76,7 +79,9 @@ export function test(t: TestDefinition): void;
   */
 export function test(name: string, fn: () => void | Promise<void>): void;
 
-export const Deno = { test };
+export namespace Deno {
+  export { test };
+}
 
 /** @internal */
 export function createTestFilter(

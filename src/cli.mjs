@@ -17,7 +17,7 @@ import mri from "mri";
 import { pathToFileURL, URL } from "url";
 import * as colors from "./colors.js";
 import { help, version } from "./help.js";
-import { createTestFilter, tests } from "./api.js";
+import { createTestFilter, readTests } from "./api.js";
 
 /** @param {string} reason */
 function errorReason(reason) {
@@ -65,10 +65,10 @@ const stats = {
 
 testing: {
   for (const path of options._) {
-    tests.length = 0;
     const url = new URL(path, cwd);
     // @ts-expect-error TypeScript doesn't support top-level await out of the box
     await import(url.href);
+    const tests = readTests();
     const filteredTests = tests.filter(filter);
     stats.filteredOut += tests.length - filteredTests.length;
     process.stdout.write(`running ${filteredTests.length} tests from ${url}\n`);

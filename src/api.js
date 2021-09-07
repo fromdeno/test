@@ -7,6 +7,10 @@ const { fail } = require("assert/strict");
 const { exit } = process;
 const tests = [];
 
+function readTests() {
+  return tests.splice(0);
+}
+
 function noExit(exitCode = 0) {
   return fail(`Test case attempted to exit with exit code: ${exitCode}`);
 }
@@ -77,4 +81,4 @@ function createTestFilter(filter) {
 
 const Deno = { test };
 
-module.exports = { createTestFilter, Deno, test, tests };
+module.exports = { createTestFilter, Deno, readTests, test, tests };
