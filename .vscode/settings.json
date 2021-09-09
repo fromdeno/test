@@ -1,5 +1,10 @@
 {
   "deno.lint": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.suggest.autoImports": true,
+  "js/ts.implicitProjectConfig.checkJs": true,
+  "js/ts.implicitProjectConfig.strictFunctionTypes": true,
+  "js/ts.implicitProjectConfig.strictNullChecks": true
 }
