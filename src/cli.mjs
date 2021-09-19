@@ -54,6 +54,15 @@ if (options.version) {
   process.exit(0);
 }
 
+if (options["fail-fast"] !== true && typeof options["fail-fast"] !== "number") {
+  process.stderr.write(
+    `fdt: --fail-fast: expected a number, got ${
+      JSON.stringify(options["fail-fast"])
+    }\n`,
+  );
+  process.exit(2);
+}
+
 const filter = createTestFilter(options.filter);
 const cwd = pathToFileURL(process.cwd() + "/");
 const failures = [];
