@@ -81,4 +81,4 @@ function createTestFilter(filter) {
 
 const Deno = { test };
 
-module.exports = { createTestFilter, Deno, readTests, test, tests };
+module.exports = { createTestFilter, Deno, readTests, test };
