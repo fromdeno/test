@@ -19,15 +19,6 @@ import * as colors from "./colors.js";
 import { help, version } from "./help.js";
 import { createTestFilter, readTests } from "./api.js";
 
-/** @param {string} reason */
-function errorReason(reason) {
-  process.once("beforeExit", () => {
-    process.stderr.write(
-      `\n${colors.bold}${colors.red}error${colors.reset}: ${reason}\n`,
-    );
-  });
-}
-
 const options = mri(process.argv.slice(2), {
   alias: {
     help: "h",
@@ -114,7 +105,6 @@ if (failures.length) {
     process.stdout.write(`\n${test.name}\n${error.stack}\n`);
   }
   process.stdout.write(`\ntest result:${colors.red} FAILED${colors.reset}. `);
-  errorReason("Test failed");
   process.exitCode = 1;
 } else {
   process.stdout.write(`\ntest result:${colors.green} ok${colors.reset}. `);
