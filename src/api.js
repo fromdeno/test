@@ -6,9 +6,17 @@
 const { fail } = require("assert/strict");
 const { exit } = process;
 const tests = [];
+const denoNsTestDefinitions = (() => {
+  try {
+    const importName = "deno.ns/test-internals";
+    return require(importName).testDefinitions;
+  } catch {
+    return [];
+  }
+})();
 
 function readTests() {
-  return tests.splice(0);
+  return tests.splice(0).concat(denoNsTestDefinitions.splice(0));
 }
 
 function noExit(exitCode = 0) {
