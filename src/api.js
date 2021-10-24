@@ -5,7 +5,15 @@
 
 const { fail } = require("assert/strict");
 const { exit } = process;
-const tests = [];
+const tests = (() => {
+  try {
+    // try to use the test definitions from deno.ns
+    const importName = "deno.ns/test-internals";
+    return require(importName).testDefinitions;
+  } catch {
+    return [];
+  }
+})();
 
 function readTests() {
   return tests.splice(0);
