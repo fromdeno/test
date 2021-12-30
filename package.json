@@ -1,6 +1,6 @@
 {
   "name": "@fromdeno/test",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Minimal test runner, compatible with Deno.test()",
   "exports": "./src/api.js",
   "typings": "./src/api.d.ts",
@@ -37,12 +37,12 @@
     "node": ">=14.13.1"
   },
   "peerDependenciesMeta": {
-    "deno.ns": {
+    "@deno/shim-deno": {
       "optional": true
     }
   },
   "peerDependencies": {
-    "deno.ns": "^0.5.0"
+    "@deno/shim-deno": "<2"
   },
   "dependencies": {
     "mri": "^1.1.6"
