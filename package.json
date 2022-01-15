@@ -2,8 +2,7 @@
   "name": "@fromdeno/test",
   "version": "0.4.0",
   "description": "Minimal test runner for @deno/shim-deno-test",
-  "exports": "./src/api.js",
-  "typings": "./src/api.d.ts",
+  "exports": {},
   "bin": {
     "fdt": "./src/cli.mjs"
   },

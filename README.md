@@ -1,6 +1,6 @@
 # `@fromdeno/test`
 
-Minimal test runner, compatible with `Deno.test()`.
+Minimal test runner for https://npm.im/@deno/shim-deno-test.
 
 [![cli](https://badgen.net/badge/icon/terminal?icon=terminal&label&labelColor=blue)](https://github.com/fromdeno/test/blob/main/src/cli_help.txt)
 [![api](https://img.shields.io/static/v1?label&message=api&color=08C&logo=Node.js&logoColor=white)](https://github.com/fromdeno/test/blob/main/src/api.d.ts)
@@ -9,7 +9,7 @@ Minimal test runner, compatible with `Deno.test()`.
 ```js
 // @filename: test/example_test.js
 const assert = require("assert/strict");
-const { test } = require("@fromdeno/test");
+const { test } = require("@deno/shim-deno-test");
 
 test("example", () => {
   assert.equal(2 + 2, 4);
@@ -20,3 +20,5 @@ test("example", () => {
 $ npm install --save-dev @fromdeno/test
 $ fdt test/example_test.js
 ```
+
+[Insights from dogfooding](https://github.com/fromdeno/test/discussions/1)

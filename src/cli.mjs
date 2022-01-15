@@ -3,7 +3,7 @@
 // @ts-check
 
 /**
- * Runs `deno.ns`'s `Deno.test`s on Node.js.
+ * Runs `@deno/shim-deno-test`'s tests on Node.js.
  *
  * Usage:
  *
@@ -17,7 +17,24 @@ import mri from "mri";
 import { pathToFileURL, URL } from "url";
 import * as colors from "./colors.js";
 import { help, version } from "./help.js";
-import { createTestFilter, readTests } from "./api.js";
+import { testDefinitions } from "@deno/shim-deno-test";
+
+function readTests() {
+  return testDefinitions.splice(0);
+}
+
+/** @param {string} filter */
+function createTestFilter(filter) {
+  /** @param {{ name: string }} def */
+  return (def) => {
+    if (!filter) return true;
+    if (filter.startsWith("/") && filter.endsWith("/")) {
+      const regex = new RegExp(filter.slice(1, filter.length - 1));
+      return regex.test(def.name);
+    }
+    return def.name.includes(filter);
+  };
+}
 
 const options = mri(process.argv.slice(2), {
   alias: {
